@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcConfigurer;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -86,7 +87,7 @@ class DemoControllerTest {
             new DefaultOAuth2TokenCallback(
                 issuerId,
                 subject,
-                List.of(audience),
+                Arrays.asList(audience),
                 Collections.emptyMap(),
                 3600
             )

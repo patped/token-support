@@ -61,7 +61,7 @@ class DefaultOAuth2HttpClientTest {
             .build();
         client.post(request);
         RecordedRequest recordedRequest = server.takeRequest();
-        var body = recordedRequest.getBody().readUtf8();
+        String body = recordedRequest.getBody().readUtf8();
         assertThat(recordedRequest.getHeaders().get("header1")).isEqualTo("headervalue1");
         assertThat(recordedRequest.getHeaders().get("header2")).isEqualTo("headervalue2");
         assertThat(body).contains("param1=value1");

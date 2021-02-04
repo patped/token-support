@@ -19,7 +19,7 @@ public class OAuth2CacheFactory {
     }
 
     private static  <T> Expiry<T, OAuth2AccessTokenResponse> evictOnResponseExpiresIn(long skewInSeconds) {
-        return new Expiry<>() {
+        return new Expiry<T, OAuth2AccessTokenResponse>() {
             @Override
             public long expireAfterCreate(@NonNull T key, @NonNull OAuth2AccessTokenResponse response,
                                           long currentTime) {

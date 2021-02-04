@@ -97,17 +97,17 @@ public class OAuth2AccessTokenService {
     }
 
     private OAuth2AccessTokenResponse executeOnBehalfOf(ClientProperties clientProperties) {
-        final var grantRequest = onBehalfOfGrantRequest(clientProperties);
+        final OnBehalfOfGrantRequest grantRequest = onBehalfOfGrantRequest(clientProperties);
         return getFromCacheIfEnabled(grantRequest, onBehalfOfGrantCache, onBehalfOfTokenClient::getTokenResponse);
     }
 
     private OAuth2AccessTokenResponse executeTokenExchange(ClientProperties clientProperties) {
-        final var grantRequest = tokenExchangeGrantRequest(clientProperties);
+        final TokenExchangeGrantRequest grantRequest = tokenExchangeGrantRequest(clientProperties);
         return getFromCacheIfEnabled(grantRequest, exchangeGrantCache, tokenExchangeClient::getTokenResponse);
     }
 
     private OAuth2AccessTokenResponse executeClientCredentials(ClientProperties clientProperties) {
-        final var grantRequest = new ClientCredentialsGrantRequest(clientProperties);
+        final ClientCredentialsGrantRequest grantRequest = new ClientCredentialsGrantRequest(clientProperties);
         return getFromCacheIfEnabled(grantRequest, clientCredentialsGrantCache,
             clientCredentialsTokenClient::getTokenResponse);
     }

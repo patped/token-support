@@ -14,7 +14,9 @@ import no.nav.security.token.support.client.spring.ClientConfigurationProperties
 import no.nav.security.token.support.core.context.TokenValidationContext;
 import no.nav.security.token.support.core.context.TokenValidationContextHolder;
 import no.nav.security.token.support.core.jwt.JwtToken;
+import okhttp3.Headers;
 import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -89,13 +91,13 @@ class OAuth2AccessTokenServiceIntegrationTest {
 
         when(tokenValidationContextHolder.getTokenValidationContext()).thenReturn(tokenValidationContext("sub1"));
         OAuth2AccessTokenResponse response = oAuth2AccessTokenService.getAccessToken(clientProperties);
-        var request = server.takeRequest();
-        var headers = request.getHeaders();
-        var body = request.getBody().readUtf8();
+        RecordedRequest request = server.takeRequest();
+        Headers headers = request.getHeaders();
+        String body = request.getBody().readUtf8();
         assertThat(headers.get("Content-Type")).contains("application/x-www-form-urlencoded");
         assertThat(headers.get("Authorization")).isNotBlank();
 
-        var usernamePwd = Optional.ofNullable(headers.get("Authorization"))
+        String usernamePwd = Optional.ofNullable(headers.get("Authorization"))
             .map(s -> s.split("Basic "))
             .filter(pair -> pair.length == 2)
             .map(pair -> Base64.getDecoder().decode(pair[1]))
@@ -130,9 +132,9 @@ class OAuth2AccessTokenServiceIntegrationTest {
 
         when(tokenValidationContextHolder.getTokenValidationContext()).thenReturn(tokenValidationContext("sub1"));
         OAuth2AccessTokenResponse response = oAuth2AccessTokenService.getAccessToken(clientProperties);
-        var request = server.takeRequest();
-        var headers = request.getHeaders();
-        var body = request.getBody().readUtf8();
+        RecordedRequest request = server.takeRequest();
+        Headers headers = request.getHeaders();
+        String body = request.getBody().readUtf8();
         assertThat(headers.get("Content-Type")).contains("application/x-www-form-urlencoded");
 
         assertThat(body).contains("grant_type=" + URLEncoder.encode(OAuth2GrantType.TOKEN_EXCHANGE.getValue(),
@@ -156,13 +158,13 @@ class OAuth2AccessTokenServiceIntegrationTest {
         server.enqueue(jsonResponse(TOKEN_RESPONSE));
 
         OAuth2AccessTokenResponse response = oAuth2AccessTokenService.getAccessToken(clientProperties);
-        var request = server.takeRequest();
-        var headers = request.getHeaders();
-        var body = request.getBody().readUtf8();
+        RecordedRequest request = server.takeRequest();
+        Headers headers = request.getHeaders();
+        String body = request.getBody().readUtf8();
         assertThat(headers.get("Content-Type")).contains("application/x-www-form-urlencoded");
         assertThat(headers.get("Authorization")).isNotBlank();
 
-        var usernamePwd = Optional.ofNullable(headers.get("Authorization"))
+        String usernamePwd = Optional.ofNullable(headers.get("Authorization"))
             .map(s -> s.split("Basic "))
             .filter(pair -> pair.length == 2)
             .map(pair -> Base64.getDecoder().decode(pair[1]))
